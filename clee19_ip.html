@@ -1,0 +1,249 @@
+<head>
+  <title>훈민정음</title>
+  <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <div id="bodyDiv">
+{{#if currentUser}}
+    
+     {{#if isPage 'menu'}}
+      <h1 class = 'gameTitle'>CHOPUZZLE</h1>
+      <h1 class = 'gameSub'>A Korean Word Game</h1>
+        {{> menu}}
+       <div id="login">
+     {{> loginButtons}}
+         </div>
+    {{/if}}
+    
+    {{#if isPage 'start'}}
+       <h1 class = 'gameTitle'>CHOPUZZLE</h1>
+      <h1 class = 'gameSub'>A Korean Word Game</h1>
+        {{> start}}
+    {{/if}}
+    
+    {{#if isPage 'points'}}
+      <h1 class = 'gameTitle'>CHOPUZZLE</h1>
+      <h1 class = 'gameSub'>A Korean Word Game</h1>
+      <button class='menu' id="menu1">Menu</button>
+        {{> points}}
+    {{/if}}
+    
+    {{#if isPage 'about'}}
+        <h1 class = 'gameTitle'>CHOPUZZLE</h1>
+      <h1 class = 'gameSub'>A Korean Word Game</h1>
+        {{> about}}
+    {{/if}}
+      
+      {{#if isPage 'review'}}
+        {{> Review}}
+    {{/if}}
+      
+      {{#if isPage 'preview'}}
+        
+        {{> Preview}}
+    {{/if}}
+    
+   
+      {{#if isPage 'tournament'}}
+        <h1 class = 'gameTitle'>CHOPUZZLE</h1>
+        <h1 class = 'gameSub'>A Korean Word Game</h1>
+        {{> Tournament}}
+    {{/if}}
+    
+    
+    <!--setting up profile attributes for highscore and level of each logged in users-->
+      {{#if userhaspoints}}
+            {{pointsImplemented}}
+            
+        {{else}}
+            {{initializePoints}}
+            
+        {{/if}}
+    
+{{else}}
+      <!--this will be displayed when not logged in -->
+    
+     <h1 id="beforelog">CHOPUZZLE</h1>
+      <h1 id = 'gameSub2'>A Korean Word Game</h1>
+   
+     {{> loginButtons}}
+    
+
+     
+        
+    
+{{/if}}
+    </div>
+</body>
+
+<!--menu page Template-->
+<template name="menu">
+    <!--this template is the menu that displays the options for the player-->
+<ul id="menu">
+          <li><button class="menuB" id='start'> Game Start </button> </li>
+          <li><button class="menuB" id='reviewNote'> Study Notes </button> </li>
+          <li><button class="menuB" id='Tournament'> Tournament </button> </li>
+          <li><button class="menuB" id='points'> Scoreboard </button> </li> 
+          <li><button class="menuB" id='about'> About </button> </li>
+          <!-- <li><button class="menuB" id='achieve'> Achievements </button></li> -->
+          <!-- <li><button class="menuB" id='battle'> 배틀모드 </button></li> -->
+    </ul>
+</template>
+
+<!--game Template-->
+<template name="start">
+    <!--this is the template for the game play-->
+    
+<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <!--this modal is for the message to be display at the end of the game/when the time is up-->
+  <h2 id="modalTitle">Game Over</h2>
+  <p class="lead">Your score is <span id="ys"></span></p>
+  <p><span id="levelup"></span></p>
+    
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+    
+    <button id="startmenu">Menu</button>
+    
+    <div id='timer'>Time Remaining: <span id="clock"></span> </div>
+    <p id="yourscore">Points: <span id="score">0</span></p>
+    
+
+    <h2 id="cho"><img src={{consonant1}}.png alt='Consonant1' width=25% height=25% id='cho1'><img src={{consonant2}}.png alt='Consonant2' width=25% height=25% id='cho2'></h2>
+
+    <p id="message">
+    <span id="alertmessage">Game Start!</span>
+        </p>
+    
+         
+ <form class="word">
+  <fieldset>
+    <legend>Enter words with the above consonants.</legend>
+
+    <label>
+      <input type="text" name="text" placeholder="Word Input">
+    </label>
+  </fieldset>
+</form>
+    <p id="wordlist">Submitted Words <span id="submittedwords"></span></p>
+    
+</template>
+
+
+<!--leaderboard Template-->
+<template name="points">
+    <!--This template displays the leaderboard-->
+    
+    <div id="yourHS"><p>{{you}}'s Highest Score: {{userHighscore}}</p></div>
+ <ol id="leaderboard">
+      {{#each pointInfo}}
+                        <li>
+                            <img src="{{photoURL}}" width=50>  <span id="userN">{{username}}</span>: {{profile.highscore}}Points (Level: {{profile.level}})</li>
+     {{/each}}
+</ol>
+</template>
+
+
+<!--토너먼트 Template-->
+<template name="Tournament">
+<!--to be implemented over the summer-->
+    <button class='menu' id="menu3">Menu</button>
+    <p>The Tournament page will be refreshed every week. Top 3 winners will win a special bonus! </p>
+    
+</template>
+
+<!--복습노트 Template-->
+<template name="Review">
+    <button class='menu' id="menu4">Menu</button>
+    <h1> Review Note</h1>
+    <button class="menuB" id='previewNote'> Go to Preview Note </button>
+    <p> You can review all the words you have previously submitted and their meanings, synonyms, and pronounciation.</p>
+    <ol id="reviewNote">
+        <li> <span id="revWord">Word 1</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 2</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 3</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 4</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 5</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 6</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 7</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 8</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 9</span>: definition, synonyms, pronounciation (submission frequency)</li>
+        <li> <span id="revWord">Word 10</span>: definition, synonyms, pronounciation (submission frequency)</li>
+
+    </ol>    
+</template>
+
+<!--예습노트 Template-->
+<template name="Preview">
+    <button class='menu' id="menu5">Menu</button>
+    <h1> Preview Note</h1>
+    <button class="menuB" id='reviewNote2'> Go to Review Note </button>
+    <p> We have saved all the recommended words we have suggested at the end of each game. This way, you can study ahead
+    and aim for a higher score next time you play!</p>
+    <ol id="previewNote">
+        <li> <span id="revWord">Word 1</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 2</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 3</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 4</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 5</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 6</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 7</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 8</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 9</span>: definition, synonyms, pronounciation </li>
+        <li> <span id="revWord">Word 10</span>: definition, synonyms, pronounciation </li>
+        
+    </ol>    
+</template>
+
+
+<!--About page Template-->
+<template name="about">
+    <button class='menu' id='menu6'>Menu</button>
+    <div id="instruction">
+        <!--This template displays the game instruction -->
+        <h2> About</h2>
+        <p>We have designed this game in order to help students who are learning Korean-as-a-Second-Language(KSL). We hope to provide 
+        an eterntaining method of improving dictions for all the KSL learners in the world. We plan to implement Chinese, Japanese, and
+        Spanish version of the game in the near future. </p>
+        
+        <p>Instructions:</p>
+        <ol>
+            <li>You will earn 200 points for every correct input</li>
+            <li>You will lose 30 points for every redundant input.</li>
+            <li>You will lose 50 points for every input that does not exist in the dictionary.</li>
+            <li>You will lose 100 points for every input that does not include the given consonant.</li>     
+        </ol>
+        <br>
+        <p>Note: the current version of the game uses <a href="https://ko.wiktionary.org">Wikitionary </a> API to determine the accuracy of your word input.Thus, there may be cases that the game defines your word input as "Does not exist in the Dictionary" although it does by the standard of the National Korean Language Institute (국립국어원).</p>
+        
+        <p>We are always seeking for improvement and suggestions, please feel free to contact us at clareblue79@gmail.com.</p>
+        
+        <p> Visit our website for more information about the game: hangulgame.com </p>
+    </div>
+</template>
+
+
+<template name="battle">
+<!--to be implemented over the summer
+{{#if isPage 'battle'}}
+        <h1><img src="title.png" alt="훈민정음 초성놀이" height=250px width= 650px ></h1>
+     <div id="login">
+         <p><img src="{{profileURL}}" width=30> 
+             Welcome, {{firstName}}<br>
+         Your current level: {{level}}
+         </p>
+     {{> loginButtons}} 
+         </div>
+        {{> battle}}
+    {{/if}}
+-->
+    <h2> Battle Mode</h2>
+    <button class="clickMatchesWithOpponent">Match me with someone!</button>
+</template>
+
+<template name="achieve">
+    <!--to be updated-->
+    <button class='menu' id="menu2">메뉴</button>
+    <h1>Acheivements</h1>    
+</template>
